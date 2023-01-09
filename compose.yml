@@ -1,0 +1,54 @@
+services:
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - AWS_REGION=eu-central-1
+      - AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
+      - AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
+      - VAULT_AWSKMS_SEAL_KEY_ID=alias/vault-key
+      - VAULT_LOG_LEVEL=debug
+    volumes:
+      - ./vault/config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.hcl
+    networks:
+      - jenkins
+
+  docker:
+    image: alpine/socat
+    container_name: socat
+    ports:
+      - "2375:2375"
+    networks:
+      jenkins:
+        aliases:
+          - docker
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: "tcp-listen:2375,fork,reuseaddr unix-connect:/var/run/docker.sock"
+    privileged: true
+
+  jenkins:
+    build: .
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    depends_on:
+      - docker
+    networks:
+      - jenkins
+    environment:
+      DOCKER_HOST: "tcp://docker:2375"
+
+networks:
+  jenkins:
+    driver: bridge

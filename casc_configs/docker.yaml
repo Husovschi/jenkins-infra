@@ -1,0 +1,32 @@
+jenkins:
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "${DOCKER_HOST:-unix:///var/run/docker.sock}"
+        templates:
+        - labelString: "docker-agent"
+          dockerTemplateBase:
+            image: "jenkins/agent"
+            environmentsString: |
+              - "TZ=Europe/Bucharest"
+          remoteFs: "/home/jenkins/agent"
+          connector:
+            attach:
+              user: "jenkins"
+          instanceCapStr: "10"
+          retentionStrategy:
+            idleMinutes: 1
+        - labelString: "terraform-docker-agent"
+          dockerTemplateBase:
+            image: "husovschi/agent-terraform"
+            environmentsString: |
+              - "TZ=Europe/Bucharest"
+          remoteFs: "/home/jenkins/agent"
+          connector:
+            attach:
+              user: "jenkins"
+          instanceCapStr: "10"
+          retentionStrategy:
+            idleMinutes: 1

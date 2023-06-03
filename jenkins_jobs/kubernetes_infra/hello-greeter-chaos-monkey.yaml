@@ -1,0 +1,13 @@
+- job:
+    name: hello-greeter-chaos-monkey
+    project-type: pipeline
+    sandbox: true
+    pipeline-scm:
+      script-path: Jenkinsfile 
+      scm:
+        - git:
+            url: 'https://github.com/Husovschi/hello-greeter-chaos-monkey.git'
+            skip-tag: true
+            wipe-workspace: false
+            branches:
+              - '*/main'

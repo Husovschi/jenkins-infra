@@ -1,0 +1,13 @@
+- job:
+    name: hello-greeter-k8s-be
+    project-type: pipeline
+    sandbox: true
+    pipeline-scm:
+      script-path: Jenkinsfile 
+      scm:
+        - git:
+            url: 'https://github.com/Husovschi/hello-greeter-k8s-be.git'
+            skip-tag: true
+            wipe-workspace: false
+            branches:
+              - '*/main'

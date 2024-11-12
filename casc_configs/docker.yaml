@@ -30,27 +30,3 @@ jenkins:
           instanceCapStr: "10"
           retentionStrategy:
             idleMinutes: 1
-        - labelString: "ansible-docker-agent"
-          dockerTemplateBase:
-            image: "husovschi/agent-ansible"
-            environmentsString: |
-              - "TZ=Europe/Bucharest"
-          remoteFs: "/home/jenkins/agent"
-          connector:
-            attach:
-              user: "jenkins"
-          instanceCapStr: "10"
-          retentionStrategy:
-            idleMinutes: 1
-        - labelString: "kubernetes-docker-agent"
-          dockerTemplateBase:
-            image: "husovschi/agent-kubernetes"
-            environmentsString: |
-              - "TZ=Europe/Bucharest"
-          remoteFs: "/home/jenkins/agent"
-          connector:
-            attach:
-              user: "jenkins"
-          instanceCapStr: "10"
-          retentionStrategy:
-            idleMinutes: 1

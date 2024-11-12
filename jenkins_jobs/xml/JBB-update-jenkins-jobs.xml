@@ -21,8 +21,7 @@
     stages {
         stage(&apos;Hello&apos;) {
             steps {
-                sh &apos;jenkins-jobs update /etc/jenkins_jobs/aws_infra/&apos;
-                sh &apos;jenkins-jobs update /etc/jenkins_jobs/kubernetes_infra/&apos;
+                sh &apos;jenkins-jobs update /etc/jenkins_jobs/scw_infra/&apos;
             }
         }
     }
